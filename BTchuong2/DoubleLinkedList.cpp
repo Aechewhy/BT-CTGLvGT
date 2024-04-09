@@ -33,7 +33,7 @@ public:
         return head == nullptr && tail == nullptr;
     }
     // get the size of the list
-    //Complexity: O(n)
+    // Complexity: O(n)
     int size()
     {
         int count = 0;
@@ -57,7 +57,7 @@ public:
         Node *curr = head;
         while (curr != nullptr)
         {
-            cout << "Element " << index << ":\tvalue: " << curr->data << endl;
+            cout << "Element " << index - 1 << ":\tvalue: " << curr->data << endl;
             curr = curr->next;
             index++;
         }
@@ -214,14 +214,13 @@ public:
             deleteFront();
             return;
         }
-        if (index == size() - 1)
+        if (index == size())
         {
             deleteBack();
             return;
         }
         if (index < size() / 2)
         {
-
             Node *curr = head;
             for (int i = 0; i < index; i++)
                 curr = curr->next;
@@ -237,8 +236,8 @@ public:
             for (int i = size(); i > index; i--)
                 curr = curr->prev;
             Node *temp = curr;
-            curr->next->prev == curr->prev;
-            curr->prev->next == curr->next;
+            curr->next->prev = curr->prev;
+            curr->prev->next = curr->next;
             delete temp;
             return;
         }
@@ -251,10 +250,8 @@ int main()
     {
         myList.insertBack(i);
     }
-    // myList.insertFront(10);
-    // myList.find_and_insert_after(10, 20);
-    // myList.find_and_insert_before(10, 20);
-    // myList.deleteFront();
+    myList.find_and_insert_after(4, 20);
+    myList.find_and_insert_before(0, 20);
     myList.deleteAt(2);
     myList.printAll();
     return 0;

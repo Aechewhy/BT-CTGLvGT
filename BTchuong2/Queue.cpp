@@ -35,23 +35,23 @@ public:
     {
         return head == nullptr && tail == nullptr;
     }
-    friend ostream &operator<<(ostream &os, const Queue &queue)
-    {
-        if (queue.isEmpty())
-        {
-            os << "There is no element in the queue" << endl;
-            return os;
-        }
-        int index = 1;
-        Node<T> *curr = head;
-        while (!curr)
-        {
-            os << "Element " << index << ":\tvalue: " << curr->data << endl;
-            curr = curr->next;
-            index++;
-        }
-        return os;
-    }
+    // friend ostream &operator<<(ostream &os, const Queue &queue)
+    // {
+    //     if (queue.isEmpty())
+    //     {
+    //         os << "There is no element in the queue" << endl;
+    //         return os;
+    //     }
+    //     int index = 1;
+    //     Node<T> *curr = head;
+    //     while (!curr)
+    //     {
+    //         os << "Element " << index << ":\tvalue: " << curr->data << endl;
+    //         curr = curr->next;
+    //         index++;
+    //     }
+    //     return os;
+    // }
 
     void printAll()
     {
@@ -91,11 +91,14 @@ public:
         tail->next = newNode;
         tail = newNode;
     }
-    int dequeue()
+    T dequeue()
     {
         if (isEmpty())
+        {
+            cout << "There is no element in the queue " << endl;
             exit(-1);
-        int value = head->data;
+        }
+        T value = head->data;
         Node<T> *temp = head;
         head = head->next;
         delete temp;
@@ -110,10 +113,7 @@ public:
         }
         if (index == 0)
         {
-            Node<T> *temp = head;
-            head = head->next;
-            delete temp;
-            return;
+            dequeue();
         }
         Node<T> *curr = head;
         for (int i = 0; i < index - 1; i++)
@@ -124,16 +124,39 @@ public:
         curr->next = temp->next;
         delete temp;
     }
-    void stringToWords(string str)
+};
+Queue<string> stringToWords(string str)
+{
+    Queue<string> result;
+    Queue<char> words;
+    for (char c : str)
     {
-        stringstream ss(str);
-        string word;
-        while (ss >> word)
+        if (c == ' ')
         {
-            enqueue(word);
+            string temp;
+            while (!words.isEmpty())
+            {
+                temp += words.dequeue();
+            }
+            result.enqueue(temp);
+        }
+        else
+        {
+            words.enqueue(c);
         }
     }
-};
+    // Handling the last word
+    string temp;
+    while (!words.isEmpty())
+    {
+        temp += words.dequeue();
+    }
+    if (!temp.empty())
+    {
+        result.enqueue(temp);
+    }
+    return result;
+}
 typedef Queue<string> Words;
 int main()
 {
@@ -141,9 +164,11 @@ int main()
     cout << "Enter string: ";
     string s;
     getline(cin, s);
-    String.stringToWords(s);
-    cout << endl;
-    cout << String;
-
+    String = stringToWords(s);
+    cout << "Size of queue after stringToWords: " << String.size() << endl;
+    while (!String.isEmpty())
+    {
+        cout << String.dequeue() << endl;
+    }
     return 0;
 }

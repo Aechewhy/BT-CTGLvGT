@@ -4,9 +4,9 @@ using namespace std;
 template <typename T>
 struct Node
 {
-    int data;
+    T data;
     Node *next;
-    Node(int value) : data(value), next(nullptr) {}
+    Node(T value) : data(value), next(nullptr) {}
 };
 template <typename T>
 class Stack
@@ -98,7 +98,39 @@ public:
         }
         head = prev;
     }
+    Node *getHead() const
+    {
+        return head;
+    }
+    void setHead(Node *newHead)
+    {
+        head = newHead;
+    }
+    friend Node<T> *Reverse(Node<T> *head);
 };
+template <typename T>
+Node<T> *Reverse(Node<T> *head)
+{
+    if (!head)
+    {
+        cout << "There is no element in the list" << endl;
+        return;
+    }
+    if (!head->next)
+        return head;
+    Node<T> *nextNode = head->next;
+    if (!nextNode->next)
+    {
+
+        head->next = nullptr;
+        nextNode->next = head;
+        head = nextNode;
+    }
+    Node<T> *newHead = Reverse(nextNode);
+    head->next = nullptr;
+    nextNode->next = head;
+    return newHead;
+}
 int main()
 {
     Stack<int> stk;
@@ -106,8 +138,10 @@ int main()
     cout << "Enter number of elements: ";
     cin >> n;
     stk.insertElements(n);
+    cout << "Your stack: " << endl;
     stk.printAll();
-    stk.reverseStack();
+    Node *newhead = Reverse(stk.getHead());
+    stk.setHead();
     cout << "Stack after reversing:" << endl;
     stk.printAll();
     return 0;

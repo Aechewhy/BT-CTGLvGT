@@ -181,8 +181,6 @@ Polynomial addPolynomials(Polynomial p1, Polynomial p2)
     Polynomial result;
     Node *curr1 = p1.sortTermsByExponentsDescending();
     Node *curr2 = p2.sortTermsByExponentsDescending();
-
-    // Iterate through both polynomials
     while (curr1 != nullptr && curr2 != nullptr)
     {
         if (curr1->comp.exponents == curr2->comp.exponents)
@@ -202,21 +200,16 @@ Polynomial addPolynomials(Polynomial p1, Polynomial p2)
             curr2 = curr2->next;
         }
     }
-
-    // Append remaining terms of p1, if any
     while (curr1 != nullptr)
     {
         result.append(curr1->comp.coefficients, curr1->comp.exponents);
         curr1 = curr1->next;
     }
-
-    // Append remaining terms of p2, if any
     while (curr2 != nullptr)
     {
         result.append(curr2->comp.coefficients, curr2->comp.exponents);
         curr2 = curr2->next;
     }
-
     return result;
 }
 void GeneratePoly(Polynomial &p)
