@@ -12,14 +12,11 @@ int sumArray(vector<int> nums, int index)
     }
 }
 //! Ham khu de quy
-int KhusumArray(vector<int> nums, int index)
+int KhusumArray(vector<int> nums)
 {
     int sum = 0;
-    while (index != nums.size())
-    {
-        sum += nums[index];
-        index++;
-    }
+    for (int i = 0; i < nums.size(); i++)
+        sum += nums[i];
     return sum;
 }
 int sumOfDigits(int num)
@@ -38,11 +35,14 @@ int KhusumOfDigits(int num)
     }
     return sum;
 }
-int findSmallestNumber(vector<int> nums)
+// Bai 3 //! sai cmnr
+int findSmallestNumber(vector<int> &nums)
 {
+    if (nums.size() == 1)
+        return nums[0];
     if (nums.size() == 2)
         return min(nums[0], nums[1]);
-    nums.pop_back();
+    nums.erase(nums.begin());
     return min(nums[0], findSmallestNumber(nums));
 }
 int KhufindSmallestNumber(vector<int> nums)
@@ -52,13 +52,15 @@ int KhufindSmallestNumber(vector<int> nums)
         minVal = min(minVal, n);
     return minVal;
 }
-int Power(int x, int y)
+// Bai 4
+template <typename T>
+int Power(T x, int y)
 {
     if (y == 0)
         return 1;
-    if (y == 1)
-        return x;
-    return x * Power(x, y - 1);
+    if (y > 0)
+        return x * Power(x, y - 1);
+    return 1.0 / (x * Power(x, -y));
 }
 int KhuPower(int x, int y)
 {
@@ -84,12 +86,12 @@ int power(int x, int y)
 
 int main()
 {
-    vector<int> Arr = {1, 2, 3, 4, 5};
+    vector<int> Arr = {9, 2, 3, 4, 1, 8, 9};
     // cout << sumArray(Arr, 0) << endl;
     // cout << KhusumArray(Arr, 0) << endl;
     // cout << sumOfDigits(123) << endl;
     // cout << KhusumOfDigits(123) << endl;
-    // cout << KhufindSmallestNumber(Arr) << endl;
-    cout << power(2, 6);
+    cout << findSmallestNumber(Arr) << endl;
+    // cout << Power(2, -4);
     return 0;
 }
