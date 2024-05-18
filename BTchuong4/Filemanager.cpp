@@ -7,52 +7,83 @@ class Folder
 {
 private:
     string name;
+    Folder *left;
+    Folder *right;
     vector<string> files;
-    vector<Folder *> subfolders;
-    Folder *parent;
 
 public:
-    Folder(string folderName, Folder *Parent = nullptr) : name(folderName), parent(Parent) {}
-    ~Folder()
-    {
-        for (auto folder : subfolders)
-            delete folder;
-    }
-    void addFiles(string fileName)
+    Folder(string folderName) : name(folderName), left(nullptr), right(nullptr) {}
+    void addFile(string fileName)
     {
         files.push_back(fileName);
     }
-    void addFolder(string folderName)
+    Folder *addChildFolder(string folderName)
     {
-        Folder *newFolder = new Folder(folderName, this);
-        subfolders.push_back(newFolder);
+        Folder *newFolder = new Folder(folderName);
+        newFolder->left = left;
+        left = newFolder;
+        return newFolder;
     }
-    void addFolderAtSameLevel(string folderName)
+    Folder *addPeerFolder(string folderName)
     {
-        if (!parent)
+        Folder *newFolder = new Folder(folderName);
+        newFolder->right = right;
+        right = newFolder;
+        return newFolder;
+    }
+    void getPeerfolders()
+    {
+        if (right)
         {
+            cout << right->name << endl;
+            right->getPeerfolders();
         }
     }
-    void get_child_items()
+    void getChildItems()
     {
-        cout << "Subfolders" << endl;
-        for (auto subfolder : subfolders)
-        {
-            cout << subfolder->name << endl;
-        }
-        cout << "Files:" << endl;
+        cout << "Folder: " << name << endl;
+        left->getPeerfolders();
+        cout << "Files: " << name << endl;
         for (auto file : files)
-        {
             cout << file << endl;
-        }
     }
-    Folder *findSubFolder(string folderName)
+    Folder *findFolder(string target)
     {
-        for (auto subfolder : subfolders)
+        if (name == target)
+            return this;
+        Folder *found = nullptr;
+        if (left)
         {
-            if (folderName == subfolder->name)
-                return subfolder;
+            found = left->findFolder(target);
         }
-        return nullptr;
+        if (found)
+        {
+            return found;
+        }
+        if (right)
+        {
+            right->findFolder(target);
+        }
+        return found;
     }
 };
+Folder *insert(Folder *root, string name, bool type)
+{
+    if (root == nullptr)
+    {
+        return root;
+    }
+    Folder *newFolder = new Folder(name, type);
+    new->right = root->right;
+    root->right = newFolder;
+    return newFolder;
+}
+int main()
+{
+    Folder *current;
+    Folder root("root");
+    root.addFile("File1");
+    root.addFile("File2");
+    root.addChildFolder("Sub1");
+    current = root.addChildFolder("Sub2");
+}

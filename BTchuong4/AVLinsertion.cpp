@@ -47,7 +47,7 @@ public:
             return node;
         Node *temp = node->left;
         node->left = temp->right;
-        temp->left = node;
+        temp->right = node;
 
         node->height = 1 + max(getHeight(node->left), getHeight(node->right));
         temp->height = 1 + max(getHeight(temp->left), getHeight(temp->right));
